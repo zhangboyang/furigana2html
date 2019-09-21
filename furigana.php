@@ -242,6 +242,8 @@ var ua = window.navigator.userAgent;
 if (ua.indexOf('MSIE ') > 0 || ua.indexOf('Trident/') > 0) {
     if (window.console) console.log("IE detected, using fallback");
     document.getElementById("fb").className = "fben";
+} else if (document.createElement("div").style["transform"] === undefined) {
+    document.getElementById("fb").className = "fben";
 }
 
 if (window.getComputedStyle && window.getComputedStyle(document.getElementById("mfstest")).fontSize != "10px") {
