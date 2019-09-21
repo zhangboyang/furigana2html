@@ -1,5 +1,5 @@
 <?php
-/* furigana renderer by ZBY 2019.4.26 */
+/* furigana html renderer by ZBY 2019.4.26 */
 
 if (php_sapi_name() == "cli") {
     $fn = $argv[1];
