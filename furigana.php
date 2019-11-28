@@ -252,6 +252,7 @@ if (window.getComputedStyle && window.getComputedStyle(document.getElementById("
     document.getElementById("main").classList.add("mfsfix");
 }
 </script>
+<!--<div><a href="javascript:;" onclick="document.getElementById('main').classList.add('debug');">enable debug</a></div>-->
 <div id="toolbar" class="gothic"><a href="javascript:;" onclick="window.print()">印刷</a><span id="ffcfg">　<a href="javascript:;" onclick="setcfg('ff','mincho')" id="mincho">明朝</a>/<a href="javascript:;" onclick="setcfg('ff','gothic')" id="gothic">ゴシック</a></span><span id="sqcfg">　<a href="javascript:;" onclick="setcfg('sq','sqen')" id="sqen">ｶﾅ</a>/<a href="javascript:;" onclick="setcfg('sq','nosq')" id="nosq">カナ</a></span></div>
 <div id="pagehead"></div>
 <div id="text"><?php
@@ -348,6 +349,9 @@ if (window.getComputedStyle && window.getComputedStyle(document.getElementById("
             if ($boxflag && $box1 !== "") {
                 if ($type == 0) {
                     $boxtype = ord($box1) < 128 ? "en" : "ja";
+                    $lnbsp = strlen($box1) - strlen(ltrim($box1, " "));
+                    $rnbsp = strlen(ltrim($box1, " ")) - strlen(trim($box1, " "));
+                    $box1 = str_repeat("&nbsp;", $lnbsp) . trim($box1, " ") . str_repeat("&nbsp;", $rnbsp);
                     echo "<div class=\"bx ${boxtype} t${box2len}b${box1len}\"><div class=\"b2\"><div><div>${box2}</div></div></div><div class=\"b1\">${box1}</div></div>";
                 }
                 if ($type == 1) {
