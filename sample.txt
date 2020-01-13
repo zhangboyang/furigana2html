@@ -1,3 +1,5 @@
+#head sample_head.txt
+#body sample_body.txt
 CHANGE THE WORLD
 \
 <div class="c"><b>CHANGE THE WORLD</b></div>

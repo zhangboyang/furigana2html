@@ -1,22 +1,52 @@
 <?php
 /* furigana html renderer by ZBY 2019.4.26 */
 
+function read_txt_file($fn)
+{
+    if (!is_string($fn) || !preg_match('/^[A-Za-z0-9_]{1,40}\.txt$/', $fn)) {
+        echo "illegal file name\n";
+        die(0);
+    }
+    $f = file_get_contents($fn);
+    if (!$f) {
+        echo "cannot open file\n";
+        die(0);
+    }
+    return $f;
+}
+
 if (php_sapi_name() == "cli") {
     $fn = $argv[1];
 } else {
     $fn = $_GET['f'];
 }
-if (!is_string($fn) || !preg_match('/^[A-Za-z0-9_]{1,40}\.txt$/', $fn)) {
-    echo "illegal file name\n";
-    die(0);
-}
-$f = file_get_contents($fn);
-if (!$f) {
-    echo "cannot open file\n";
-    die(0);
-}
-$e = explode("\n", $f, 2);
-$s = preg_split('//u', $e[1], -1, PREG_SPLIT_NO_EMPTY);
+
+$lines = explode("\n", read_txt_file($fn));
+
+$headtxt = "";
+$bodytxt = "";
+
+$lines = array_filter($lines, function ($l) {
+    global $headtxt;
+    global $bodytxt;
+    if ($l[0] == "#") {
+        list($directive, $incfile) = explode(" ", $l, 2);
+        if ($directive === "#head") {
+            $headtxt = read_txt_file($incfile);
+        } else if ($directive === "#body") {
+            $bodytxt = read_txt_file($incfile);
+        } else {
+            echo "invalid directive\n";
+            die(0);
+        }
+        return false;
+    } else {
+        return true;
+    }
+});
+
+list($title, $contents) = explode("\n", implode("\n", $lines), 2);
+$s = preg_split('//u', $contents, -1, PREG_SPLIT_NO_EMPTY);
 
 ?><!DOCTYPE html>
 <html lang="ja">
@@ -24,7 +54,7 @@ $s = preg_split('//u', $e[1], -1, PREG_SPLIT_NO_EMPTY);
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <meta http-equiv="content-language" content="ja">
 <meta name="viewport" content="width=device-width">
-<title><?php echo $e[0]; ?></title>
+<title><?php echo $title; ?></title>
 <style>
 @media print
 {
@@ -220,9 +250,9 @@ ruby {
 }
 </style>
 <![endif]-->
-</head>
+<?php echo $headtxt; ?></head>
 <body>
-<script>
+<?php echo $bodytxt; ?><script>
 function setcfg(t, v) {
     document.getElementById(t).className = v;
     document.cookie = t + "=" + v + ";max-age=31536000";

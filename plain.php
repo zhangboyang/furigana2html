@@ -16,6 +16,9 @@ if (!$f) {
     die(0);
 }
 
+$f = preg_replace("/\n#[^\n]*\n/", "\n", $f);
+$f = preg_replace("/^#[^\n]*\n/", "", $f);
+
 $f = preg_replace("/\([^)]*\)/", "", $f);
 $f = preg_replace("/<[^<]*>/", "", $f);
 $f = preg_replace("/[{}\[\]\\\\]/", "", $f);
