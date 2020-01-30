@@ -28,5 +28,6 @@ $f = preg_replace("/^\n/", "", $f);
 
 
 header('Content-Type: text/plain; charset=utf-8');
+header('Content-Language: ja');
 echo $f;
 ?>
