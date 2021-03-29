@@ -56,8 +56,7 @@ $s = preg_split('//u', $contents, -1, PREG_SPLIT_NO_EMPTY);
 <meta name="viewport" content="width=device-width">
 <title><?php echo $title; ?></title>
 <style>
-@media print
-{
+@media print {
     #toolbar {
         display: none !important;
     }
@@ -66,6 +65,19 @@ $s = preg_split('//u', $contents, -1, PREG_SPLIT_NO_EMPTY);
     }
     #pagetail {
         display: none !important;
+    }
+}
+
+@media (prefers-color-scheme: dark) {
+    html {
+        color: white;
+        background-color: black;
+    }
+    #toolbar {
+        border-bottom: 1px solid white !important;
+    }
+    #toolbar a {
+        color: deepskyblue !important;
     }
 }
 
